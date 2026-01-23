@@ -1,5 +1,6 @@
 package practice.layerPractice.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import practice.layerPractice.entity.HandEntity;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HandRepository {
+public interface HandRepository extends JpaRepository<HandEntity, Long> {
 
     // 저장
     HandEntity save(HandEntity handEntity);
