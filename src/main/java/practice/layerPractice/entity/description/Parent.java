@@ -1,8 +1,10 @@
-package practice.layerPractice.entity;
+package practice.layerPractice.entity.description;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import practice.layerPractice.entity.RoleType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,10 +13,11 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 // @Table(uniqueConstraints = ) : 컬럼에 유니크 제약조건을 걸고자 할때
-public class description {
+public class Parent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "parents_id")
     private Long id;
     /*
     기본 키 제약 조건 : Not null, 유일, 변하면 안됨.
@@ -60,4 +63,37 @@ public class description {
 
     @Transient  // 데이터베이스에서 사용하지 않음
     private int temp;
+
+    @ManyToOne
+    @JoinColumn(name = "son_id")
+    @Setter(AccessLevel.NONE)
+    private Son son;
+    /*
+    - 단방향 연관관계
+    호출할 엔티티에서
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    이것만 해주면 끝 ManyToOne : N:1
+
+    - 양방향 연관관계
+    사실 양방향은 단방향이 2개인 연관관계
+    테이블은 양방향 / 객체는 단방향 2개
+    연관관계의 주인은 외래키가 있는곳으로 설정 >> N쪽이 주인임.
+    주인 : 조회, 수정, 삭제 가능 / 주인 아닌 객체 : 읽기만 가능
+
+    - 양방향 매핑시 실수
+    객체에 값을 입력할때 주인에 해야함. ex) Team의 List<Member> members에 넣으면 안됨
+    주인에만 넣어도 jpa는 돌아가지만 테스트케이스/1차 캐쉬 등 때문에 양쪽 객체에 다 넣어주는게 좋음
+    >> 양방향을 매번 하기 보다 아래 처럼 Setter 메서드에 추가로 넣어서 자동으로 하게 하기.
+    양방향 매핑에서 무한루프 조심. ex) toString(), lombok, JSON 생성 라이브러리
+
+    - @Setter(AccessLevel.NONE)
+    Setter 금지 따로 만들어 써야함
+     */
+
+    public void setSon(Son son){
+        this.son = son;
+        // 양방향 매핑에서 한번의 호출로 양 객체에 값을 다 넣기 위함.
+        son.getParents().add(this);
+    }
 }
