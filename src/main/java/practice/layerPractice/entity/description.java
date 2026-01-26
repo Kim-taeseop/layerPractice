@@ -14,7 +14,18 @@ import java.time.LocalDateTime;
 public class description {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    /*
+    기본 키 제약 조건 : Not null, 유일, 변하면 안됨.
+    기본 키 매핑 직접 할거면 @Id만
+    자동 생성 : @GeneratedValue
+    strategy = GenerationType.~~  : 자동 매핑 설정
+    GenerationType.AUTO : DB 방언에 따라 자동으로 생성.  설정은 아래 3가지
+    GenerationType.IDENTITY : 데이터베이스에 위임. 주로 MySQL. ex) MySQL 의 Auto_increment
+    GenerationType.SEQUENCE : 주로 Oracle. 시퀀스 오브젝트를 통해 값을 생성
+    GenerationType.TABLE : 키 생성용 테이블을 따로 만듬. 모든 데이터베이스 사용 가능. 성능이 안좋음
+     */
 
     @Column(name = "name")
     private String username;
