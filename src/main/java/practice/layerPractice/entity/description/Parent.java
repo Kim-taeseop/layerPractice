@@ -72,8 +72,9 @@ public class Parent {
     - 단방향 연관관계
     호출할 엔티티에서
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "son_id")
     이것만 해주면 끝 ManyToOne : N:1
+    만약 OneToMany 여도 외래키는 many쪽에 있음 그래서 @JoinColumn(name = "son_id") 를 son 객체에서 선언해야 함.
 
     - 양방향 연관관계
     사실 양방향은 단방향이 2개인 연관관계
@@ -82,7 +83,7 @@ public class Parent {
     주인 : 조회, 수정, 삭제 가능 / 주인 아닌 객체 : 읽기만 가능
 
     - 양방향 매핑시 실수
-    객체에 값을 입력할때 주인에 해야함. ex) Team의 List<Member> members에 넣으면 안됨
+    객체에 값을 입력할때 주인에 해야함. ex) Son의 List<Parent> parents에 넣으면 안됨
     주인에만 넣어도 jpa는 돌아가지만 테스트케이스/1차 캐쉬 등 때문에 양쪽 객체에 다 넣어주는게 좋음
     >> 양방향을 매번 하기 보다 아래 처럼 Setter 메서드에 추가로 넣어서 자동으로 하게 하기.
     사실 양방향은 우선 단방향으로 설계를 끝낸 후 필요시 아래 코드 추가 및 Son에 매핑 추가 해주는게 좋음.
