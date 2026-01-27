@@ -85,6 +85,7 @@ public class Parent {
     객체에 값을 입력할때 주인에 해야함. ex) Team의 List<Member> members에 넣으면 안됨
     주인에만 넣어도 jpa는 돌아가지만 테스트케이스/1차 캐쉬 등 때문에 양쪽 객체에 다 넣어주는게 좋음
     >> 양방향을 매번 하기 보다 아래 처럼 Setter 메서드에 추가로 넣어서 자동으로 하게 하기.
+    사실 양방향은 우선 단방향으로 설계를 끝낸 후 필요시 아래 코드 추가 및 Son에 매핑 추가 해주는게 좋음.
     양방향 매핑에서 무한루프 조심. ex) toString(), lombok, JSON 생성 라이브러리
 
     - @Setter(AccessLevel.NONE)
