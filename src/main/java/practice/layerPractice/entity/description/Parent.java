@@ -91,6 +91,15 @@ public class Parent {
 
     - @Setter(AccessLevel.NONE)
     Setter 금지 따로 만들어 써야함
+
+    - 일대일 연관관계
+    주 테이블이나 대상 테이블 중 외래키 선택 가능
+    다대일과 유사 단방향 @OneToOne @JoinColumn(name = "son_id"), 양방향 @OneToOne(mappedBy = "son")
+    외래 키에 데이터베이스 유니크 제약조건 추가
+
+    - 다대다 연관관계
+    @ManyToMany 로 객체는 되지만 테이블은 바로 불가 그래서 중간 테이블을 만들어야 함.
+    실무에선 @ManyToMany 안쓰고 일대다 다대일을 통해 중간 테이블, 엔티티를 직접 만들어 사용
      */
 
     public void setSon(Son son){
