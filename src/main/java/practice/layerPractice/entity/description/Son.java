@@ -7,6 +7,10 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+설명 엔티티중 양방향 매핑의 주인이 아닌 객체
+ */
+
 @Getter
 @Setter
 @Entity
