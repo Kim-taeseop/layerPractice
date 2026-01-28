@@ -1,4 +1,4 @@
-package practice.layerPractice.entity.description;
+package practice.layerPractice.entity.description.mapping;
 
 import jakarta.persistence.*;
 import lombok.Getter;

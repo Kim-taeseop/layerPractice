@@ -1,4 +1,4 @@
-package practice.layerPractice.entity.description;
+package practice.layerPractice.entity.description.mapping;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,8 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
-설명 엔티티중 기준이 되는 엔티티
-예를들어 양방향 매핑 엔티티의 주인 엔티티, 상속의 부모
+설명 엔티티중 양방향 매핑의 주인
  */
 
 @Setter
