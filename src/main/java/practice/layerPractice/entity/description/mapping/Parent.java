@@ -5,12 +5,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import practice.layerPractice.entity.RoleType;
+import practice.layerPractice.entity.description.Period;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
 설명 엔티티중 양방향 매핑의 주인
+기본적인 엔티티의 설명도 이 엔티티에 포함
  */
 
 @Setter
@@ -61,6 +63,10 @@ public class Parent {
     // 시간 정보 타입
     private LocalDate localDateTest;
     private LocalDateTime localDateTimeTest;
+
+    // 임베디드 타입
+    @Embedded
+    private Period workPeriod;
 
     @Lob    // varchar 이상의 큰 글자
     private String description;
