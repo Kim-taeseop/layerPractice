@@ -68,7 +68,7 @@ public class Parent {
     @Transient  // 데이터베이스에서 사용하지 않음
     private int temp;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "son_id")
     @Setter(AccessLevel.NONE)
     private Son son;
@@ -104,6 +104,14 @@ public class Parent {
     - 다대다 연관관계
     @ManyToMany 로 객체는 되지만 테이블은 바로 불가 그래서 중간 테이블을 만들어야 함.
     실무에선 @ManyToMany 안쓰고 일대다 다대일을 통해 중간 테이블, 엔티티를 직접 만들어 사용
+
+    - 지연로딩과 즉시로딩
+    지연 로딩 : @ManyToOne 과 같은 연관관계 어노테이션 옆에 (fetch = FetchType.LAZY) 설정
+            parent를 호출하면 parent 객체만 호출하고 son은 프록시로 호출. 실제 son을 사용할때 프록시 초기화
+    즉시 로딩 : @ManyToOne 과 같은 연관관계 어노테이션 옆에 (fetch = FetchType.EAGER) 설정
+            parent과 son을 같이 쓰는 경우가 대부분일땐 즉시 로딩으로 동시에 객체 호출
+    왠만하면 지연 로딩이 좋음
+    @ ~ToOne : 즉시 로딩이 디폴트 > 지연 로딩 설정 해야함   /   @ ~ToMany : 지연 로딩이 디폴트
      */
 
     public void setSon(Son son){
