@@ -9,6 +9,8 @@ import practice.layerPractice.entity.description.Period;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 설명 엔티티중 양방향 매핑의 주인
@@ -67,6 +69,21 @@ public class Parent {
     // 임베디드 타입
     @Embedded
     private Period workPeriod;
+
+    @ElementCollection
+    @CollectionTable(name = "period", joinColumns = @JoinColumn(name = "parent_id"))
+    private List<Period> periodList = new ArrayList<>();
+    /*
+    값 타입 컬렉션
+    값 타입을 하나 이상 저장할 때 사용 / @ElementCollection, @CollectionTable 사용
+    데이터베이스는 컬렉션을 같은 테이블에 저장할 수 없기 때문에 별로의 테이블이 필요함.
+    값 타입 컬렉션은 영속성 전이 + 고아 객체 제거 기능 필수로 가짐. / 값 타입 컬렉션도 지연 로딩 전략 사용
+
+    갑 타입 컬렉션 제약사항
+    식별자가 없어 추적이 어려움
+    값 타입 컬렉션에 변경사항이 생기면, 주인 엔티티와 관련된 데이터 다 삭제 후 다시 저장
+    실무에서는 상황에 따라 일대다를 그냥 쓰는게 좋음 (영속성 전이 + 고아 객체 사용으로 값 타입 컬렉션 처럼 사용)
+     */
 
     @Lob    // varchar 이상의 큰 글자
     private String description;
