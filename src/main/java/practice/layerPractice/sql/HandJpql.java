@@ -35,9 +35,6 @@ public class HandJpql {
             "select new practice.layerPractice.sql.sqlEntity.MemberDTO(m.name, m.age) from MemberSQL m"
                     , MemberDTO.class).getResultList(); // 스칼라 타입 방식2  DTO 사용
 
-    List<TeamSQL> listTeam = em.createQuery(
-            "select t from MemberSQL m join m.teamSQL t", TeamSQL.class).getResultList();    // 조인 쿼리
-
     List<AddressSQL> orders = em.createQuery(
             "select o.addressSQL from OrderSQL o", AddressSQL.class).getResultList();   // 임베디드 사용
 
@@ -45,9 +42,17 @@ public class HandJpql {
     // 페이징 setFirstResult(int start) : 조회 시작 위치  setMaxResults(int max) : 조회할 데이터 수
     List<MemberSQL> pagingResult = em.createQuery(
             "select m from MemberSQL m order by m.age desc", MemberSQL.class)
-            .setFirstResult(0).setMaxResults(10)    // 0번째 부터 10개 들고옴
+            .setFirstResult(0).setMaxResults(10)    // 0번째 부터 10개 들고가
             .getResultList();
 
+
+    // 조인
+    String joinSql1 = "select t from MemberSQL m join m.teamSQL t"; // inner join
+    String joinSql2 = "select f from MemberSQL m left join m.teamSQL t";    // outer join
+    String joinSql3 = "select count(m) from MemberSQL m, TeamSQL t where m.name = t.name";  // 세타 join(막 join) 연관관계가 없음
+    String joinSql4 = "select m, t from MemberSQL m left join m.teamSQL t on t.name = 'A";  // on을 사용한 조인대상 필터링
+    String joinSql5 = "select m, t from MemberSQL m left join TeamSQL t on m.name = t.name";    // on을 사용한 연관관계 없는 조인
+    List<TeamSQL> listTeam = em.createQuery(joinSql1, TeamSQL.class).getResultList();
 
 
     // 단일값 찾기
