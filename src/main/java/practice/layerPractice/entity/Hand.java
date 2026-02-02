@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class HandEntity {
+public class Hand {
 
     @Id
     private Long id;
