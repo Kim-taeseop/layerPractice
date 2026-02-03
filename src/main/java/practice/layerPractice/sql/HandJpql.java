@@ -57,13 +57,25 @@ public class HandJpql {
 
     // 조건식 - case
     List<String> caseResult = em.createQuery(
-                    "select" +
-                            "case when m.age <= 10 then '학생요금' " +
-                            "     when m.age >= 60 then '경로요금' " +
-                            "     else '일반요금' " +
-                            "end " +
-                            "from MemberSQL m", String.class)
+            "select" +
+                    "case when m.age <= 10 then '학생요금' " +
+                    "     when m.age >= 60 then '경로요금' " +
+                    "     else '일반요금' " +
+                    "end " +
+                    "from MemberSQL m", String.class)
             .getResultList();
+
+
+    /*
+    페치 조인
+    특징 : 연관된 컬렉션을 한번에 조회. 별칭X. 컬렉션을 페치 조인 하면 페이징 API 불가. 둘 이상의 컬렉션 페치 조인 불가
+        -> 일대일, 다대일 같은 단일 값 연관 필드는 페치 조인 해도 페이징 가능
+    사용법 : [ LEFT [OUTER] | INNER ] JOIN FETCH 조인경로
+    DISTINCT : JPQL에서 DISTINCT를 쓰면 SQL에서 중복 제거 효과와 애플리케이션에서 엔티티 중복 제거를 동시에 해줌
+     */
+    List<MemberSQL> fetchResult = em.createQuery(
+            "select m from MemberSQL m join fetch m.teamSQL", MemberSQL.class)
+            .getResultList();   // 쿼리 하나로 member과 소속된 팀까지 한번에 조인
 
 
     // 단일값 찾기
