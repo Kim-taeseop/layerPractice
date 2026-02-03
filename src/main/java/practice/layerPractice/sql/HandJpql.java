@@ -61,16 +61,6 @@ public class HandJpql {
             .setParameter("name", "member1")    // 파라미터 바인딩
             .getSingleResult();
 
-    // 조건식 - case
-    List<String> caseResult = em.createQuery(
-            "select" +
-                        "case when m.age <= 10 then '학생요금' " +
-                        "     when m.age >= 60 then '경로요금' " +
-                        "     else '일반요금' " +
-                        "end " +
-                    "from MemberSQL m", String.class)
-            .getResultList();
-
 
     // Native SQL
     List<MemberSQL> listNative = em.createNativeQuery(
