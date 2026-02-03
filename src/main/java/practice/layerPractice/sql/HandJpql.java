@@ -55,6 +55,17 @@ public class HandJpql {
     List<TeamSQL> listTeam = em.createQuery(joinSql1, TeamSQL.class).getResultList();
 
 
+    // 조건식 - case
+    List<String> caseResult = em.createQuery(
+                    "select" +
+                            "case when m.age <= 10 then '학생요금' " +
+                            "     when m.age >= 60 then '경로요금' " +
+                            "     else '일반요금' " +
+                            "end " +
+                            "from MemberSQL m", String.class)
+            .getResultList();
+
+
     // 단일값 찾기
     MemberSQL singleResult = em.createQuery(
             "select m from MemberSQL m where m.name = :name", MemberSQL.class)
