@@ -11,6 +11,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@NamedQuery(    // 정적 쿼리 사용
+        name = "MemberSQL.findByName",
+        query = "select m from MemberSQL m where m.name = :name"
+)
 public class MemberSQL {
 
     @Id @GeneratedValue

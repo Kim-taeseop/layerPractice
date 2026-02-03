@@ -75,7 +75,13 @@ public class HandJpql {
      */
     List<MemberSQL> fetchResult = em.createQuery(
             "select m from MemberSQL m join fetch m.teamSQL", MemberSQL.class)
-            .getResultList();   // 쿼리 하나로 member과 소속된 팀까지 한번에 조인
+            .getResultList();   // 쿼리 하나로 member과 소속된 팀까지 한번에 조인용
+
+
+    // Named 쿼리
+    List<MemberSQL> namedResult = em.createNamedQuery("MemberSQL.findByName", MemberSQL.class)
+            .setParameter("name", "회원1")
+            .getResultList();
 
 
     // 단일값 찾기
