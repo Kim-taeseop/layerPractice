@@ -84,6 +84,11 @@ public class HandJpql {
             .getResultList();
 
 
+    // 벌크 연산.  쿼리 한번으로 여러 테이블 로우 변경. executeUpdate() 결과 : 영향 받은 엔티티 수
+    int resultCount = em.createQuery("update Member m set m.age = 20")
+            .executeUpdate();
+
+
     // 단일값 찾기
     MemberSQL singleResult = em.createQuery(
             "select m from MemberSQL m where m.name = :name", MemberSQL.class)
