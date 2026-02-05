@@ -34,6 +34,8 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-devtools'		// view 파일 변환
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.12.1'	// 쿼리 파라미터 로그
+
+	testRuntimeOnly 'com.h2database:h2'	// 테스트용 h2 DB
 }
 
 tasks.named('test') {
