@@ -4,6 +4,7 @@
 
 - SQL
 
+
 <br>
 
 #### Controller
@@ -32,6 +33,11 @@
 
 #### SQL
 - sqlEntity 폴더 : JPQL 연습에 필요한 엔티티
-- HandJpql : Jpql 사용 코드 모-
+- HandJpql : Jpql 사용 코드 모음
 
 <br>
+
+
+Service 이후 설계는 학습 후 추후 프로젝트를 통해 해야할 것 같음
+
+여기서 하면 아예 전체 설계를 하는 느낌
