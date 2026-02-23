@@ -40,6 +40,7 @@ public class HandJpql {
 
 
     // 페이징 setFirstResult(int start) : 조회 시작 위치  setMaxResults(int max) : 조회할 데이터 수
+    // 컬렉션을 페치 조인 하면 페이징 API 불가
     List<MemberSQL> pagingResult = em.createQuery(
             "select m from MemberSQL m order by m.age desc", MemberSQL.class)
             .setFirstResult(0).setMaxResults(10)    // 0번째 부터 10개 들고가
