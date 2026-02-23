@@ -38,9 +38,12 @@ public class HandJpql {
     List<AddressSQL> orders = em.createQuery(
             "select o.addressSQL from OrderSQL o", AddressSQL.class).getResultList();   // 임베디드 사용
 
-
-    // 페이징 setFirstResult(int start) : 조회 시작 위치  setMaxResults(int max) : 조회할 데이터 수
-    // 컬렉션을 페치 조인 하면 페이징 API 불가
+    /*
+    페이징 setFirstResult(int start) : 조회 시작 위치  setMaxResults(int max) : 조회할 데이터 수
+    컬렉션을 페치 조인 하면 페이징 API 불가
+    -> ToOne 관계는 페치 조인해도 페이징에 영향을 주지 않음.
+       따라서 ToOne 관계는 페치조인으로 쿼리 수 를 줄이고, 나머지는 `hibernate.default_batch_fetch_size` 로 최적화 하자.
+     */
     List<MemberSQL> pagingResult = em.createQuery(
             "select m from MemberSQL m order by m.age desc", MemberSQL.class)
             .setFirstResult(0).setMaxResults(10)    // 0번째 부터 10개 들고가
