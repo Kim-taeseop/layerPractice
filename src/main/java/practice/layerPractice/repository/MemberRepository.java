@@ -3,6 +3,7 @@ package practice.layerPractice.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -91,4 +92,26 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying(clearAutomatically = true)   // 벌크 연산은 DB에 바로 저장하기 때문에 이 쿼리 이후 자동으로 영속성 반영 및 저장을 함. -> 다른 연산에 영향 안미치게
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
+
+    // jpql fetch join
+    @Query("select m from Member m join fetch m.team")
+    List<Member> findMemberFetchJoin();
+
+    // EntityGraph -> @EntityGraph를 통해 team과 fetch join 해줌
+    @Override
+    @EntityGraph(attributePaths = {"team"})
+    List<Member> findAll();
+
+    //JPQL + 엔티티 그래프
+    @EntityGraph(attributePaths = {"team"})
+    @Query("select m from Member m")
+    List<Member> findMemberEntityGraph();
+
+    // 메서드이름 쿼리에서 엔티티 그래프 사전
+    @EntityGraph(attributePaths = {"team"})
+    List<Member> findEntityGraphByUsername(@Param("username") String username);
+
+    // 네임드 엔티티 그래프 사용
+    @EntityGraph("Member.all")
+    List<Member> findNamedGraphByUsername(@Param("username") String username);
 }

@@ -10,6 +10,7 @@ import lombok.*;
 @NamedQuery(
         name="Member.findByUsername",
         query="select m from Member m where m.username = :username")    // 네임드 쿼리 사용. 잘 안씀
+@NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))    // 네임드 쿼리 엔티티 그래프 버용
 public class Member {
 
     @Id @GeneratedValue
