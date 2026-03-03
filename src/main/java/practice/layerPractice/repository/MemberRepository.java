@@ -1,12 +1,11 @@
 package practice.layerPractice.repository;
 
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import practice.layerPractice.dto.MemberDto;
 import practice.layerPractice.entity.jpaEntity.Member;
@@ -107,11 +106,19 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m")
     List<Member> findMemberEntityGraph();
 
-    // 메서드이름 쿼리에서 엔티티 그래프 사전
+    // 메서드이름 쿼리에서 엔티티 그래프 사용
     @EntityGraph(attributePaths = {"team"})
     List<Member> findEntityGraphByUsername(@Param("username") String username);
 
     // 네임드 엔티티 그래프 사용
     @EntityGraph("Member.all")
     List<Member> findNamedGraphByUsername(@Param("username") String username);
+
+    // 쿼리 힌트 사용
+    @QueryHints(value = {@QueryHint(name = "org.hibernate.readOnly", value = "true")}, forCounting = true)
+    Member findReadOnlyByUsername(String username);
+
+    //해당 row를 조회하는 순간 다른 트랜잭션이 그 데이터를 수정하지 못하게 막음
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    List<Member> findLockByUsername(String username);
 }
