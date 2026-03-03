@@ -7,6 +7,7 @@ import practice.layerPractice.dto.MemberDto;
 import practice.layerPractice.entity.jpaEntity.Member;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
 Spring Data JPA 쿼리 메소드 관련 내용
@@ -56,4 +57,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 파라미터 바인딩 in 절 사용
     @Query("select m from Member m where m.username in :names")
     List<Member> findByNames(@Param("names") List<String> names);
+
+    // 다양한 반환타입
+    List<Member> findListByUsername(String username);   // 컬렉션
+    Member findMemberByUsername(String username);   // 단건
+    Optional<Member> findOptionalByUsername(String username);   // 단건 Optional
 }
