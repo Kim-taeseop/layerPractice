@@ -1,5 +1,8 @@
 package practice.layerPractice.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -62,4 +65,24 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findListByUsername(String username);   // 컬렉션
     Member findMemberByUsername(String username);   // 단건
     Optional<Member> findOptionalByUsername(String username);   // 단건 Optional
+
+    // Spring Data JPA 를 사용한 페이징
+    Page<Member> findByAge(int age, Pageable pageable);     // 카운트 쿼리 포함
+    Slice<Member> findByUsername(String name, Pageable pageable);   // 카운트 쿼리 없이 다음페이지 확인
+    // 카운트 쿼리 분리 -> 프로젝트 규모가 커지면 카운트 쿼가 무거워짐
+    @Query(value = "select m from Member m",
+            countQuery = "select count(m.username) from Member m")
+    Page<Member> findMemberAllCountBy(Pageable pageable);
+    /*
+    사용 방식
+    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "username"));
+    Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+    Page<MemberDto> toMap = page.map(m -> new MemberDto(m.getId(), m.getUsername(), null);  // Page Dto로 변환
+
+    List<Member> content = page.getContent(); -> paging 한번 한 단위
+    long total = page.getTotalElements(); -> 총 데이터 수
+    int num = page.getNumber(); -> 페이지 번호
+    int totalPage = page.getTotalPages(); -> 총 페이지 개수
+    */
 }
