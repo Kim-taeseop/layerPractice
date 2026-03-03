@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import practice.layerPractice.dto.MemberDto;
@@ -85,4 +86,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     int num = page.getNumber(); -> 페이지 번호
     int totalPage = page.getTotalPages(); -> 총 페이지 개수
     */
+
+    // 벌크성 수정 spring data jpa 기준
+    @Modifying(clearAutomatically = true)   // 벌크 연산은 DB에 바로 저장하기 때문에 이 쿼리 이후 자동으로 영속성 반영 및 저장을 함. -> 다른 연산에 영향 안미치게
+    @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
+    int bulkAgePlus(@Param("age") int age);
 }
