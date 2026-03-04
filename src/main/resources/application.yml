@@ -7,20 +7,29 @@ spring:
     password : 1234
     driver-class-name=com: com.mysql.cj.jdbc.Driver
 
-## JPA setting
+  ## JPA setting
   jpa:
     hibernate:
       ddl-auto : create
     properties :
       hibernate :
         format_sql : true
-        show-sql : true
+        # show-sql : true -> 대신 log
+    #      default_batch_fetch_size : 10  # 지연 로딩 성능 최적화 size : in 쿼리 크기
+    #  open-in-view : true   # OSIV ON (default)  false(off) 하면 트랜잭션 범위에서만 영속성 on
 
-## MySQL dialect
+    ## MySQL dialect
     database-platform : org.hibernate.dialect.MySQLDialect
+
+  # page 글로벌 설정
+  data:
+    web:
+      pageable:
+        default-page-size : 10  #page 기본값 변경 (원래 20)
+        max-page-size : 2000    #page 최대값 변경
 
 ## log
 logging:
   level:
     org.hibernate.SQL : debug
-    org.hibernate.orm.jdbc.bind: trace
+  #  org.hibernate.orm.jdbc.bind: trace
