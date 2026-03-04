@@ -1,4 +1,4 @@
-package practice.layerPractice.entity;
+package practice.layerPractice.entity.baseEntity;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
