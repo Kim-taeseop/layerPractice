@@ -17,7 +17,7 @@ import java.util.Optional;
 Spring Data JPA 쿼리 메소드 관련 내용
  */
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     /*
     - Spring Data JPA의 쿼리 메소드
