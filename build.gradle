@@ -36,6 +36,12 @@ dependencies {
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.12.1'	// 쿼리 파라미터 로그
 	testRuntimeOnly 'com.h2database:h2'	// 테스트용 h2 DB
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // @NotEmpty,@Valid 등 쓰기 위함
+
+	// QueryDSL
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 tasks.named('test') {
