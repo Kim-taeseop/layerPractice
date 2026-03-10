@@ -92,6 +92,17 @@ public class HandQueryDsl {
 
         List<Member> result5 = searchMember1(usernameParam, ageParam);   // 동적 쿼리 - BooleanBuilder 사용
         List<Member> result6 = searchMember2(usernameParam, ageParam);   // 동적 쿼리 - Where 다중 파라미터 사용
+
+        // 벌크 연산  update, delete
+        long count = queryFactory
+                .update(member)     // delete하면 삭제
+                .set(member.username, "비회원")
+                // .set(member.age, member.age.add(1) || member.age.multiply(2) 이런식 벌크 연산.
+                .where(member.age.lt(28))   // age<28
+                .execute();
+
+        em.flush();
+        em.clear(); // 벌크 연산은 버로 DB로 가기 때문에 플러쉬 클리어 해줘야함.
     }
 
     private List<Member> searchMember1(String usernameCond, Integer ageCond) {
