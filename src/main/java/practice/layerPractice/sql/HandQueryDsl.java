@@ -1,10 +1,15 @@
 package practice.layerPractice.sql;
 
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import practice.layerPractice.entity.jpaEntity.Member;
+
+import java.util.List;
 
 import static practice.layerPractice.entity.jpaEntity.QMember.member;
+import static practice.layerPractice.entity.jpaEntity.QTeam.team;
 
 /*
 QueryDSL 관련 클래스
@@ -20,7 +25,8 @@ public class HandQueryDsl {
     public void queryDsl() {
         queryFactory = new JPAQueryFactory(em);
 
-        queryFactory
+        // 일반적인 qeuryDsl 사용
+        List<Member> result1 = queryFactory
                 .select(member)
                 .from(member)
                 .where(     // 조건
@@ -34,6 +40,20 @@ public class HandQueryDsl {
                 .offset(1)  // 페이징. 0부터 시작임.
                 .limit(2)   // 2개씩 끊어서
                 .fetch();
+
+        // 함수 및 그룹, 조입 사용 결과 타입이 여러개일때 tuple 사용 >> 실무는 DTO
+        List<Tuple> result2 = queryFactory
+                .select(team.name, member.age.avg())
+                .from(member)
+                .join(member.team, team)
+                .groupBy(team.name)
+                .fetch();
+
+        Tuple team1 = result2.get(0);
+        Tuple team2 = result2.get(1);
+        Integer max1 = team1.get(member.age.max());
+        Double avg2 = team2.get(member.age.avg());
+
     }
 
     /*
