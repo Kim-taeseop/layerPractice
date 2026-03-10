@@ -1,10 +1,12 @@
 package practice.layerPractice.sql;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import practice.layerPractice.entity.jpaEntity.Member;
+import practice.layerPractice.entity.jpaEntity.QMember;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class HandQueryDsl {
 
     public void queryDsl() {
         queryFactory = new JPAQueryFactory(em);
+        QMember memberSub = new QMember("memberSub");
 
         // 일반적인 qeuryDsl 사용
         List<Member> result1 = queryFactory
@@ -31,7 +34,11 @@ public class HandQueryDsl {
                 .from(member)
                 .where(     // 조건
                         member.username.eq("member1"),
-                        member.age.eq(10)
+                        member.age.eq(  // 서브쿼리 작성법
+                                JPAExpressions
+                                        .select(memberSub.age.max())
+                                        .from(memberSub)
+                        )
                 )
                 .orderBy(   // 정렬
                         member.age.desc(),
@@ -44,8 +51,10 @@ public class HandQueryDsl {
         // 함수 및 그룹, 조입 사용 결과 타입이 여러개일때 tuple 사용 >> 실무는 DTO
         List<Tuple> result2 = queryFactory
                 .select(team.name, member.age.avg())
-                .from(member)
-                .join(member.team, team)
+                .from(member)               // from(엔티티 2개를 넣어 세타조인 가능)
+                .join(member.team, team).fetchJoin()  // (조인 대상, 별칭으로 사용할 Q타입), .fetchJoin(): 페치조인 사용
+                    .on(team.name.eq("teamA"))  // inner 조인은 where쓰고, outer일때 on절 사용
+                // from(member, team) 세타조인 -> leftjoin(team).on(member.username.eq(team.name)) 이런식 사용
                 .groupBy(team.name)
                 .fetch();
 
@@ -84,5 +93,10 @@ public class HandQueryDsl {
     member.username.like("member%") //like 검색
     member.username.contains("member") // like ‘%member%’ 검색
     member.username.startsWith("member") //like ‘member%’ 검색
+
+    - join
+    join() : 내부 조인(inner join)
+    leftJoin() : left 외부 조인(left outer join)
+    rightJoin() : right 외부 조인(right outer join)
      */
 }
