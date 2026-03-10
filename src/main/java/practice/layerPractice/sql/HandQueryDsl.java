@@ -34,7 +34,7 @@ public class HandQueryDsl {
                 .from(member)
                 .where(     // 조건
                         member.username.eq("member1"),
-                        member.age.eq(  // 서브쿼리 작성법
+                        member.age.eq(  // 서브쿼리 작성
                                 JPAExpressions
                                         .select(memberSub.age.max())
                                         .from(memberSub)
@@ -98,5 +98,12 @@ public class HandQueryDsl {
     join() : 내부 조인(inner join)
     leftJoin() : left 외부 조인(left outer join)
     rightJoin() : right 외부 조인(right outer join)
+
+    - case 문
+    when, then 사용
+    범위 설정 -> new CaseBuilder()
+            .when(member.age.between(0, 20)).then("0~20살")
+            .when(member.age.between(21, 30)).then("21~30살")
+            .otherwise("기타")
      */
 }
