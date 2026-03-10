@@ -1,6 +1,8 @@
 package practice.layerPractice.sql;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -83,6 +85,52 @@ public class HandQueryDsl {
                 .select(new QMemberDto(member.username, member.age))
                 .from(member)
                 .fetch();
+
+        // 동적 쿼리 사용
+        String usernameParam = "member1";
+        Integer ageParam = 10;
+
+        List<Member> result5 = searchMember1(usernameParam, ageParam);   // 동적 쿼리 - BooleanBuilder 사용
+        List<Member> result6 = searchMember2(usernameParam, ageParam);   // 동적 쿼리 - Where 다중 파라미터 사용
+    }
+
+    private List<Member> searchMember1(String usernameCond, Integer ageCond) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+        if(usernameCond != null){
+            builder.and(member.username.eq(usernameCond));
+        }
+        if(ageCond != null){
+            builder.and(member.age.eq(ageCond));
+        }
+
+        return queryFactory
+                .selectFrom(member)
+                .where(builder)
+                .fetch();
+    }
+
+    private List<Member> searchMember2(String usernameCond, Integer ageCond) {
+        return queryFactory
+                .selectFrom(member)
+                .where(usernameEq(usernameCond), ageEq(ageCond))    // null은 무시됨.
+                .fetch();
+    }
+
+    private Predicate usernameEq(String usernameCond) {
+        if (usernameCond != null){
+            return member.username.eq(usernameCond);
+        }else {
+            return null;
+        }
+    }
+
+    private Predicate ageEq(Integer ageCond) {
+        if(ageCond == null){
+            return null;
+        }else {
+            return member.age.eq(ageCond);
+        }
     }
 
     /*
