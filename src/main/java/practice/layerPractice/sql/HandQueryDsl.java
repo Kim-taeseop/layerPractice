@@ -1,10 +1,13 @@
 package practice.layerPractice.sql;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import practice.layerPractice.dto.MemberDto;
+import practice.layerPractice.dto.QMemberDto;
 import practice.layerPractice.entity.jpaEntity.Member;
 import practice.layerPractice.entity.jpaEntity.QMember;
 
@@ -63,6 +66,23 @@ public class HandQueryDsl {
         Integer max1 = team1.get(member.age.max());
         Double avg2 = team2.get(member.age.avg());
 
+        /* - 결과를 Dto로 반환
+        Projections.bean : 프로퍼티 접근 - Setter 사용
+        Projections.fields : 필드 접근 방식
+        Projections.constructor : 생성자 사용 방식
+         */
+        List<MemberDto> result3 = queryFactory
+                .select(Projections.bean(MemberDto.class,
+                        member.username,
+                        member.age))
+                .from(member)
+                .fetch();
+
+        // @QueryProjection 를 이용한 dto 방식
+        List<MemberDto> result4 = queryFactory
+                .select(new QMemberDto(member.username, member.age))
+                .from(member)
+                .fetch();
     }
 
     /*
